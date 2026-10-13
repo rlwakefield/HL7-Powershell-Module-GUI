@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.*" />
+    <PackageReference Include="xunit" Version="2.*" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.*" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\hl7tools.csproj" SetTargetFramework="TargetFramework=net10.0" />
+    <!-- UI-independent GUI logic, compiled here so it can be tested without WPF -->
+    <Compile Include="..\..\gui-app\Cmdlets\SendHL7Request.cs" Link="SendHL7Request.cs" />
+    <Compile Include="..\..\gui-app\InputValidationException.cs" Link="InputValidationException.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,5 +1,21 @@
 # HL7 Tools WPF GUI
 
+## Standalone application (recommended)
+
+`gui-app/` contains a native C# WPF application that references the `hl7tools` library directly (no PowerShell required).
+
+```
+dotnet publish gui-app -c Release -r win-x64
+```
+
+This produces a self-contained single-file `HL7ToolsGUI.exe` in `gui-app\bin\Release\net10.0-windows\win-x64\publish\`. Run it by double-clicking it.
+
+To add a cmdlet panel, create a `UserControl` that implements `ICmdletPanel` (see `gui-app/Cmdlets/SendHL7MessagePanel.xaml(.cs)`) and add it to `PanelRegistry`. Reusable, UI-independent logic lives in `src/` and is covered by `tests/HL7Tools.Tests` (`dotnet test tests/HL7Tools.Tests`).
+
+## Legacy PowerShell GUI
+
+The original PowerShell GUI described below remains available but is superseded by the standalone application.
+
 The GUI provides a PowerShell 7 WPF interface for `Send-HL7Message`. It is Windows-only, uses built-in WPF, and discovers cmdlet panels from `gui/Cmdlets` at startup.
 
 ## Requirements and launch

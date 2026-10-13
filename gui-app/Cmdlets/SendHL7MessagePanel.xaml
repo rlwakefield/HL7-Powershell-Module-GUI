@@ -1,0 +1,77 @@
+<UserControl x:Class="HL7ToolsGUI.Cmdlets.SendHL7MessagePanel"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <StackPanel Margin="8">
+            <GroupBox Header="Connection" Margin="0,0,0,8">
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="100" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Content="Host name:" VerticalAlignment="Center" />
+                    <TextBox x:Name="HostNameTextBox" Grid.Column="1" Margin="4" />
+                    <Label Content="Port:" Grid.Column="2" VerticalAlignment="Center" />
+                    <TextBox x:Name="PortTextBox" Grid.Column="3" Margin="4" />
+                    <CheckBox x:Name="UseTlsCheckBox" Checked="UseTlsCheckBox_Changed" Unchecked="UseTlsCheckBox_Changed" Content="Use TLS" Grid.Row="1" Margin="4" />
+                    <CheckBox x:Name="SkipCertificateCheckBox" Content="Skip certificate check" Grid.Row="1" Grid.Column="1" Margin="4" IsEnabled="False" />
+                </Grid>
+            </GroupBox>
+            <GroupBox Header="Message source" Margin="0,0,0,8">
+                <StackPanel Margin="8">
+                    <WrapPanel>
+                        <RadioButton x:Name="PathRadioButton" Checked="SourceMode_Checked" Content="File(s) / wildcard path" GroupName="SourceMode" IsChecked="True" Margin="4" />
+                        <RadioButton x:Name="LiteralPathRadioButton" Checked="SourceMode_Checked" Content="Literal path" GroupName="SourceMode" Margin="12,4,4,4" />
+                        <RadioButton x:Name="MessageRadioButton" Checked="SourceMode_Checked" Content="Message text" GroupName="SourceMode" Margin="12,4,4,4" />
+                    </WrapPanel>
+                    <Grid x:Name="PathInputPanel" Margin="4">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="PathTextBox" Margin="0,0,8,0" />
+                        <Button x:Name="BrowseButton" Click="BrowseButton_Click" Content="Browse..." Grid.Column="1" Padding="12,4" />
+                    </Grid>
+                    <TextBox x:Name="MessageTextBox" Visibility="Collapsed" Margin="4" Height="150"
+                             AcceptsReturn="True" AcceptsTab="True" TextWrapping="NoWrap"
+                             VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Auto"
+                             FontFamily="Consolas" />
+                </StackPanel>
+            </GroupBox>
+            <GroupBox Header="Options" Margin="0,0,0,8">
+                <Grid Margin="8">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="180" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="100" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Label Content="Encoding:" VerticalAlignment="Center" />
+                    <ComboBox x:Name="EncodingComboBox" Grid.Column="1" Margin="4" SelectedIndex="0">
+                        <ComboBoxItem Content="UTF-8" />
+                        <ComboBoxItem Content="ISO-8859-1" />
+                    </ComboBox>
+                    <Label Content="Delay (seconds):" Grid.Column="2" VerticalAlignment="Center" />
+                    <TextBox x:Name="DelayTextBox" Grid.Column="3" Margin="4" Text="0" />
+                    <CheckBox x:Name="NoAckCheckBox" Content="No ACK" Grid.Row="1" Margin="4" />
+                </Grid>
+            </GroupBox>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                <Button x:Name="SendButton" Click="SendButton_Click" Content="Send" IsDefault="True" Padding="20,6" Margin="4" />
+                <Button x:Name="ClearButton" Click="ClearButton_Click" Content="Clear" Padding="20,6" Margin="4" />
+                <Button x:Name="CloseButton" Click="CloseButton_Click" Content="Close" Padding="20,6" Margin="4" />
+            </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

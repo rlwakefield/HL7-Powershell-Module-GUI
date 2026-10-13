@@ -1,0 +1,42 @@
+name: Publish GUI executable
+
+on:
+  # triggered when a release is published
+  release:
+    types: [ published ]
+  # manual trigger
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: windows-latest
+
+    steps:
+      # checkout repo
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      # publish the self-contained single file executable
+      - name: Publish HL7ToolsGUI.exe
+        run: dotnet publish gui-app --configuration Release --runtime win-x64 --output .\gui-publish
+
+      # zip the executable
+      - name: Zip executable
+        run: Compress-Archive -Path .\gui-publish\HL7ToolsGUI.exe -DestinationPath .\HL7ToolsGUI-win-x64.zip
+
+      # upload as a workflow artifact
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: HL7ToolsGUI-win-x64
+          path: HL7ToolsGUI-win-x64.zip
+
+      # attach to the GitHub release when triggered by a release
+      - name: Attach to release
+        if: github.event_name == 'release'
+        uses: softprops/action-gh-release@v2
+        with:
+          files: HL7ToolsGUI-win-x64.zip
