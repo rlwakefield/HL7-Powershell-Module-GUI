@@ -4,14 +4,14 @@ if (-not $IsWindows) {
     throw 'The HL7 Tools GUI requires Windows and PowerShell 7 or later.'
 }
 
-if ([Threading.Thread]::CurrentThread.GetApartmentState() -ne [Threading.ApartmentState]::STA) {
+if ([System.Threading.Thread]::CurrentThread.GetApartmentState() -ne [System.Threading.ApartmentState]::STA) {
     $pwsh = Join-Path $PSHOME 'pwsh.exe'
-    $arguments = @('-NoProfile', '-STA', '-File', "`"$PSCommandPath`"")
+    $arguments = @('-NoProfile', '-STA', '-File', "$PSScriptRoot/Start-HL7ToolsGUI.ps1")
     $process = Start-Process -FilePath $pwsh -ArgumentList $arguments -Wait -PassThru
     exit $process.ExitCode
 }
 
-Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Xaml
+Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase
 
 . (Join-Path $PSScriptRoot 'Common/GuiHelpers.ps1')
 
@@ -52,6 +52,7 @@ $context = [pscustomobject]@{
     LogBox = $logBox
     StatusText = $statusText
     NavigationList = $cmdletList
+    PanelDefinition = $null
     RunCommand = $null
     ShowMessage = { param($message, $title, $icon) Show-GuiMessage -Message $message -Title $title -Icon $icon }.GetNewClosure()
     CloseWindow = { $window.Close() }.GetNewClosure()
