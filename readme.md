@@ -45,6 +45,9 @@ The solution will build versions for .Net 6.0 (Microsoft Powershell 6+) and .Net
 2. The build process will copy each version of hl7tools.dll to subfolders of `module\hl7tools\lib\`. The contents of the `\module\hl7tools` folder will contain the Powershell Module.
 3. Move the `\hl7tools` folder to your Powershell Module Path (query the path from the environment variable by running `$env:PSModulePath` from a powershell console). Restart powershell. Alternatively, if you don't wish to load the module with all new powershell sessions, run `import-module .\hl7tools\hl7tools.psd1` to use the module for the current session only.
 
+# WPF GUI
+The repository includes a Windows-only PowerShell 7 WPF GUI for `Send-HL7Message`. Launch it from the repository root with `pwsh -STA -File gui/Start-HL7ToolsGUI.ps1`. It imports the module from `module/hl7tools` first, then falls back to an installed `hl7tools` module. See [gui/README.md](gui/README.md) for requirements and instructions for adding another cmdlet panel.
+
 # CmdLet Usage 
 ## Select-HL7Item
 This CmdLet returns the values of specific HL7 items from a file (or group of files). This is intended to aid with integration work to validate the values of fields over a large sample of HL7 messages. Some basic filtering is available to only include specific messages from a larger sample.
