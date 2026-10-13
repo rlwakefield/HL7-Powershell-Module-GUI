@@ -7,8 +7,8 @@ if (-not $IsWindows) {
 if ([Threading.Thread]::CurrentThread.GetApartmentState() -ne [Threading.ApartmentState]::STA) {
     $pwsh = Join-Path $PSHOME 'pwsh.exe'
     $arguments = @('-NoProfile', '-STA', '-File', "`"$PSCommandPath`"")
-    Start-Process -FilePath $pwsh -ArgumentList $arguments -Wait
-    exit $LASTEXITCODE
+    $process = Start-Process -FilePath $pwsh -ArgumentList $arguments -Wait -PassThru
+    exit $process.ExitCode
 }
 
 Add-Type -AssemblyName PresentationFramework, PresentationCore, WindowsBase, System.Xaml
@@ -39,7 +39,7 @@ foreach ($definitionFile in Get-ChildItem -Path (Join-Path $PSScriptRoot 'Cmdlet
             throw 'Panel definition must provide Name, DisplayName, XamlPath, Initialize, and BuildParameters.'
         }
 
-        $definitions += $definition
+        $definitions += [pscustomobject]$definition
     }
     catch {
         Write-GuiLog -Text "Unable to load panel '$($definitionFile.Name)': $($_.Exception.Message)" -LogBox $logBox -Level 'ERROR'
