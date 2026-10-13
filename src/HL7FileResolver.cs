@@ -15,7 +15,7 @@ namespace HL7Tools
     {
         /// <summary>
         /// Resolve the paths to a list of files. A directory expands to the files it contains. When expandWildcards
-        /// is true, * and ? in the file name are expanded; otherwise the path is treated literally.
+        /// is true, * and ? in the path are expanded; otherwise the path is treated literally.
         /// </summary>
         public static List<string> ResolveFiles(IEnumerable<string> paths, bool expandWildcards)
         {
@@ -28,14 +28,40 @@ namespace HL7Tools
                 }
                 else if (expandWildcards && path.IndexOfAny(new char[] { '*', '?' }) >= 0)
                 {
-                    string directory = Path.GetDirectoryName(path);
-                    if (string.IsNullOrEmpty(directory))
+                    string root = Path.GetPathRoot(path);
+                    string remainder = path.Substring(root.Length);
+                    string[] segments = remainder.Split(new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar }, System.StringSplitOptions.RemoveEmptyEntries);
+                    List<string> directories = new List<string> { string.IsNullOrEmpty(root) ? "." : root };
+                    for (int i = 0; i < segments.Length - 1; i++)
                     {
-                        directory = ".";
+                        List<string> matchingDirectories = new List<string>();
+                        foreach (string directory in directories)
+                        {
+                            if (segments[i].IndexOfAny(new char[] { '*', '?' }) >= 0)
+                            {
+                                if (Directory.Exists(directory))
+                                {
+                                    matchingDirectories.AddRange(Directory.GetDirectories(directory, segments[i]));
+                                }
+                            }
+                            else
+                            {
+                                string childDirectory = Path.Combine(directory, segments[i]);
+                                if (Directory.Exists(childDirectory))
+                                {
+                                    matchingDirectories.Add(childDirectory);
+                                }
+                            }
+                        }
+                        directories = matchingDirectories;
                     }
-                    if (Directory.Exists(directory))
+
+                    foreach (string directory in directories)
                     {
-                        files.AddRange(Directory.GetFiles(directory, Path.GetFileName(path)));
+                        if (Directory.Exists(directory))
+                        {
+                            files.AddRange(Directory.GetFiles(directory, segments[segments.Length - 1]));
+                        }
                     }
                 }
                 else

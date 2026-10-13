@@ -72,7 +72,11 @@ namespace HL7Tools.Tests
                 File.WriteAllText(Path.Combine(dir, "a.hl7"), "x");
                 File.WriteAllText(Path.Combine(dir, "b.hl7"), "x");
                 File.WriteAllText(Path.Combine(dir, "c.txt"), "x");
+                string childDir = Path.Combine(dir, "child");
+                Directory.CreateDirectory(childDir);
+                File.WriteAllText(Path.Combine(childDir, "d.hl7"), "x");
                 Assert.Equal(2, HL7FileResolver.ResolveFiles(new[] { Path.Combine(dir, "*.hl7") }, true).Count);
+                Assert.Single(HL7FileResolver.ResolveFiles(new[] { Path.Combine(dir, "*", "*.hl7") }, true));
                 Assert.Equal(3, HL7FileResolver.ResolveFiles(new[] { dir }, false).Count);
                 Assert.Single(HL7FileResolver.ResolveFiles(new[] { Path.Combine(dir, "*.hl7") }, false));
             }
