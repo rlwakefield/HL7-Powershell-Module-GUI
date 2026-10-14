@@ -25,3 +25,10 @@ jobs:
       # build .Net Framework solution  
       - name: Build .net framework 4.8 solution
         run: dotnet publish --configuration release --framework net48 --output .\module\hl7tools\lib\net48\
+      # run unit tests
+      - name: Run unit tests
+        run: dotnet test tests\HL7Tools.Tests --configuration release
+
+      # build the GUI application
+      - name: Build GUI application
+        run: dotnet build gui-app --configuration release

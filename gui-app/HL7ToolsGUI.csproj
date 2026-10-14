@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <PlatformTarget>x64</PlatformTarget>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <EnableWindowsTargeting>true</EnableWindowsTargeting>
+    <AssemblyName>HL7ToolsGUI</AssemblyName>
+    <RootNamespace>HL7ToolsGUI</RootNamespace>
+    <Product>HL7 Tools GUI</Product>
+    <Version>1.7.15</Version>
+    <!-- self-contained single file executable -->
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- reference the library using the net10.0 target -->
+    <ProjectReference Include="..\hl7tools.csproj" SetTargetFramework="TargetFramework=net10.0" />
+  </ItemGroup>
+
+</Project>

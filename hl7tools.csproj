@@ -11,7 +11,16 @@
     <FileVersion>1.7.15.0</FileVersion>
 	<RepositoryUrl>https://github.com/RobHolme/HL7-Powershell-Module</RepositoryUrl>
   </PropertyGroup>
-  
+
+  <!-- exclude the GUI application and test projects from the module build -->
+  <ItemGroup>
+    <Compile Remove="gui-app\**" />
+    <Compile Remove="tests\**" />
+    <EmbeddedResource Remove="gui-app\**" />
+    <EmbeddedResource Remove="tests\**" />
+    <None Remove="gui-app\**" />
+    <None Remove="tests\**" />
+  </ItemGroup>
   
   <ItemGroup Condition="$(TargetFramework.StartsWith('net10'))">
     <PackageReference Include="PowerShellStandard.Library" Version="5.1.1"/>

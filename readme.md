@@ -46,7 +46,13 @@ The solution will build versions for .Net 6.0 (Microsoft Powershell 6+) and .Net
 3. Move the `\hl7tools` folder to your Powershell Module Path (query the path from the environment variable by running `$env:PSModulePath` from a powershell console). Restart powershell. Alternatively, if you don't wish to load the module with all new powershell sessions, run `import-module .\hl7tools\hl7tools.psd1` to use the module for the current session only.
 
 # WPF GUI
-The repository includes a Windows-only PowerShell 7 WPF GUI for `Send-HL7Message`. Launch it from the repository root with `pwsh -STA -File gui/Start-HL7ToolsGUI.ps1`. It imports the module from `module/hl7tools` first, then falls back to an installed `hl7tools` module. See [gui/README.md](gui/README.md) for requirements and instructions for adding another cmdlet panel.
+A standalone Windows desktop application (`HL7ToolsGUI.exe`) provides a GUI for `Send-HL7Message`. It is a native C# WPF application that uses the `hl7tools` library directly, so PowerShell is not required.
+
+- Build: `dotnet publish gui-app -c Release -r win-x64` produces a self-contained, single-file `HL7ToolsGUI.exe` (in `gui-app\bin\Release\net10.0-windows\win-x64\publish\`). No .NET install is needed on the target machine.
+- Run: double-click `HL7ToolsGUI.exe`.
+- Pre-built executables are attached to each GitHub release (also available as an artifact from the "Publish GUI executable" workflow).
+
+The original PowerShell 7 GUI script (`gui/Start-HL7ToolsGUI.ps1`) remains available as a legacy option. See [gui/README.md](gui/README.md) for details of both.
 
 # CmdLet Usage 
 ## Select-HL7Item
